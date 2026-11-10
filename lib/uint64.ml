@@ -8,8 +8,9 @@ type t =
   ; lo : int
   }
 
+let zero : t = { hi = 0; lo = 0 }
+
 (*
-val zero : t
 val max_int : t
 val of_string : string -> t option
 val to_string : t -> string
