@@ -1,0 +1,126 @@
+# imgconv: a fictional image converter
+#
+# exercises every option kind unfurl might support.
+# keys marked (?) are proposals, not yet in the IR.
+
+[program]
+name = "imgconv"
+version = "0.3.1"
+summary = "convert and resize images"
+
+# --- flags ------------------------------------------------------------------
+
+[[opt]]
+long = "dry-run"
+short = "n"
+kind = "flag"
+help = "print what would be done, write nothing"
+
+[[opt]]
+long = "color"
+kind = "flag"
+default = true
+negatable = true            # (?) also accepts --no-color
+help = "colorize output"
+
+[[opt]]
+long = "quiet"
+short = "q"
+kind = "flag"
+conflicts = ["verbose"]     # (?) error if both are given
+help = "only print errors"
+
+# --- counters ---------------------------------------------------------------
+
+[[opt]]
+long = "verbose"
+short = "v"
+kind = "count"              # -vvv or -v -v -v => 3
+max = 3                     # (?) clamp or error past 3
+help = "increase verbosity, repeatable"
+
+# --- integers ---------------------------------------------------------------
+
+[[opt]]
+long = "jobs"
+short = "j"
+kind = "int"
+metavar = "N"
+default = 1
+min = 1                     # (?)
+max = 256                   # (?)
+help = "number of worker threads"
+
+[[opt]]
+long = "quality"
+kind = "int"
+metavar = "Q"
+default = 85
+min = 0
+max = 100
+help = "lossy encoder quality, 0 to 100"
+
+[[opt]]
+long = "rotate"
+short = "r"
+kind = "int"
+metavar = "DEG"
+default = 0
+min = -270                  # negative bounds and values
+max = 270
+help = "rotate clockwise by DEG degrees"
+
+# --- strings ----------------------------------------------------------------
+
+[[opt]]
+long = "output"
+short = "o"
+kind = "string"
+metavar = "PATH"
+required = true             # (?) error if absent
+help = "output file, \"-\" for stdout"
+
+[[opt]]
+long = "config"
+kind = "string"
+metavar = "FILE"
+env = "IMGCONV_CONFIG"      # (?) fallback when not given on the command line
+help = "read defaults from FILE"
+
+# --- enums ------------------------------------------------------------------
+
+[[opt]]
+long = "format"
+short = "f"
+kind = "enum"               # (?)
+choices = ["png", "jpeg", "webp", "qoi"]
+default = "png"
+help = "output format"
+
+[[opt]]
+long = "filter"
+kind = "enum"
+choices = [
+    "nearest",
+    "bilinear",
+    "lanczos",
+]                           # multi-line array, trailing comma
+default = "lanczos"
+help = "resampling filter"
+
+# --- repeatable strings -----------------------------------------------------
+
+[[opt]]
+long = "include"
+short = "I"
+kind = "list"               # (?) -I a -I b => ["a", "b"]
+metavar = "DIR"
+help = "add DIR to the search path, repeatable"
+
+# --- positionals ------------------------------------------------------------
+
+[[pos]]                     # (?) second table kind
+name = "input"
+metavar = "INPUT"
+variadic = true             # (?) one or more
+help = "images to convert"
