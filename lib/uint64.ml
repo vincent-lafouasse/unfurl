@@ -1,4 +1,12 @@
-type t = { bits : int64 }
+(*
+0 <= hi < 2^32
+0 <= lo < 2^32
+value = hi * 2^32 + lo
+*)
+type t =
+  { hi : int
+  ; lo : int
+  }
 
 (*
 val zero : t
