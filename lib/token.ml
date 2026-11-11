@@ -11,7 +11,7 @@ type t =
 
 let to_string = function
   | Identifier ident -> Printf.sprintf "identifier \"%s\"" ident
-  | Integer i -> failwith "need Int65.format"
+  | Integer i -> Int65.to_string i
   | Boolean b -> if b then "true" else "false"
   | String s -> Printf.sprintf "string \"%s\"" s
   | LBracket -> "["

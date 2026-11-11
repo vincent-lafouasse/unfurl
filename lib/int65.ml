@@ -23,3 +23,7 @@ let compare a b =
   | true, false -> -1
   | false, true -> 1
 ;;
+
+let to_string { neg; mag } =
+  Printf.sprintf "%s%s" (if neg then "-" else "") (Uint64.to_string mag)
+;;
