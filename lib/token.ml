@@ -7,6 +7,8 @@ type t =
   | LLBracket
   | RBracket
   | RRBracket
+  | Equals
+  | Comma
   | Newline
   | Eof
 
@@ -15,10 +17,12 @@ let to_string = function
   | Integer i -> Printf.sprintf "integer %s" (Int65.to_string i)
   | Boolean b -> Printf.sprintf "boolean %s" (if b then "true" else "false")
   | String s -> Printf.sprintf "string \"%s\"" s
-  | LBracket -> "["
+  | LBracket -> "'['"
   | LLBracket -> "[["
-  | RBracket -> "]"
+  | RBracket -> "']'"
   | RRBracket -> "]]"
+  | Equals -> "'='"
+  | Comma -> "','"
   | Newline -> "new line"
   | Eof -> "end of file"
 ;;
