@@ -9,7 +9,7 @@ type t =
   | RRBracket
   | Eof
 
-let format = function
+let to_string = function
   | Identifier ident -> Printf.sprintf "identifier \"%s\"" ident
   | Integer i -> failwith "need Int65.format"
   | Boolean b -> if b then "true" else "false"
