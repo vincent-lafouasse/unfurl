@@ -3,6 +3,9 @@ type t
 val zero : t
 val max_int : t
 
+(* only reachable error path is overflow *)
+val of_digits : string -> t option
+
 val compare : t -> t -> int
 val equal : t -> t -> bool
 

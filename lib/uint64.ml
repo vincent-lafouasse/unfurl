@@ -21,9 +21,7 @@ let of_int64 (i : int64) : t =
 
 let of_int i = if i < 0 then None else Some (of_int64 (Int64.of_int i))
 
-(*
-val of_string : string -> t option
-*)
+let of_digits s = failwith "todo"
 
 (* Int64's unsigned functions serve as the oracle *)
 let%test_module "uint64" =
