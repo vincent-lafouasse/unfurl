@@ -29,8 +29,6 @@ let i32 = { signed = Signed; width = W32 }
 let u64 = { signed = Unsigned; width = W64 }
 let i64 = { signed = Signed; width = W64 }
 
-let pow2 (n : int) : Int65.t = failwith "todo"
-
 let min { signed; width } : Int65.t = failwith "todo"
 let max { signed; width } : Int65.t = failwith "todo"
 
