@@ -7,8 +7,12 @@ let max_int : t = String.make 8 '\255'
 let compare = String.compare
 let equal = String.equal
 
+(* just reinterpret the bits *)
+let to_i64 (u : t) : int64 = String.get_int64_be u 0
+
+let to_string u = Printf.sprintf "%Lu" (to_i64 u)
+
 (*
 val of_string : string -> t option
-val to_string : t -> string
 val of_int : int -> t option
 *)
