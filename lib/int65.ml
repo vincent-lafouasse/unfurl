@@ -15,3 +15,11 @@ let of_literal s : t option =
   in
   Uint64.of_digits digits |> Option.map (make neg)
 ;;
+
+let compare a b =
+  match a.neg, b.neg with
+  | false, false -> Uint64.compare a.mag b.mag
+  | true, true -> Uint64.compare b.mag a.mag
+  | true, false -> -1
+  | false, true -> 1
+;;
