@@ -1,22 +1,7 @@
-(* theoretically we only need values up to u32_max,
-   but we need room in our ALU for carry stuff
-*)
-let () =
-  if Sys.int_size < 63
-  then failwith "Uint64: int is too small, unfurl needs a 64-bit OCaml"
-;;
+(* big endian bytes, always 8 characters *)
+type t = { bytes : string }
 
-(*
-0 <= hi < 2^32
-0 <= lo < 2^32
-value = hi * 2^32 + lo
-*)
-type t =
-  { hi : int
-  ; lo : int
-  }
-
-let zero : t = { hi = 0; lo = 0 }
+let zero : t = { bytes = String.make 8 '\000' }
 
 (*
 val max_int : t
