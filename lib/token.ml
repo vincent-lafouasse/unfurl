@@ -12,7 +12,7 @@ type t =
 let to_string = function
   | Identifier ident -> Printf.sprintf "identifier \"%s\"" ident
   | Integer i -> Printf.sprintf "integer %s" (Int65.to_string i)
-  | Boolean b -> if b then "true" else "false"
+  | Boolean b -> Printf.sprintf "boolean %s" (if b then "true" else "false")
   | String s -> Printf.sprintf "string \"%s\"" s
   | LBracket -> "["
   | LLBracket -> "[["
