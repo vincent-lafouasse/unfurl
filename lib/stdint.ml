@@ -52,4 +52,4 @@ let max ty =
   | Signed, W64 -> lit "9223372036854775807"
 ;;
 
-let fits (i : Int65.t) { signed; width } : bool = failwith "todo"
+let fits ty v = Int65.compare (min ty) v <= 0 && Int65.compare v (max ty) <= 0
