@@ -21,7 +21,36 @@ let of_int64 (i : int64) : t =
 
 let of_int i = if i < 0 then None else Some (of_int64 (Int64.of_int i))
 
-let of_digits s = failwith "todo"
+let u64_max_str = "18446744073709551615"
+
+let compare_decimal (a : string) (b : string) : int =
+  match Int.compare (String.length a) (String.length b) with
+  | 0 -> String.compare a b
+  | c -> c
+;;
+
+(* s * 10 + d, one byte at a time from the least significant one.
+   v <= 255 * 10 + 9 so it always fits in an int.
+   cannot overflow if s <= u64_max_str, hence the assert *)
+let digits_to_bytes (s : string) : t =
+  let b = Bytes.make 8 '\000' in
+  let push_digit c =
+    let carry = ref (Char.code c - Char.code '0') in
+    for i = 7 downto 0 do
+      let v = (Bytes.get_uint8 b i * 10) + !carry in
+      Bytes.set_uint8 b i (v land 0xFF);
+      carry := v lsr 8
+    done;
+    assert (!carry = 0)
+  in
+  String.iter push_digit s;
+  Bytes.unsafe_to_string b
+;;
+
+let of_digits s =
+  let will_overflow = compare_decimal s u64_max_str > 0 in
+  if will_overflow then None else Some (digits_to_bytes s)
+;;
 
 (* Int64's unsigned functions serve as the oracle *)
 let%test_module "uint64" =
@@ -67,6 +96,23 @@ let%test_module "uint64" =
         (fun a ->
            List.for_all (fun b -> sign (Stdlib.compare a b) = sign (compare a b)) us)
         us
+    ;;
+
+    let%test "of_digits round trips to_string" =
+      List.for_all (fun u -> of_digits (to_string u) = Some u) us
+    ;;
+
+    let%test "of_digits at the u64 boundary" =
+      of_digits "18446744073709551615" = Some max_int
+      && of_digits "18446744073709551616" = None
+      && of_digits "99999999999999999999" = None
+      && of_digits "100000000000000000000" = None
+    ;;
+
+    let%test "of_digits below 20 digits" =
+      of_digits "0" = Some zero
+      && Option.map to_string (of_digits "9999999999999999999")
+         = Some "9999999999999999999"
     ;;
 
     let%test "pp matches to_string" =
