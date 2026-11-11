@@ -1,11 +1,11 @@
 (* big endian bytes, always 8 characters *)
-type t = { bytes : string }
+type t = string
 
-let zero : t = { bytes = String.make 8 '\000' }
-let max_int : t = { bytes = String.make 8 '\255' }
+let zero : t = String.make 8 '\000'
+let max_int : t = String.make 8 '\255'
 
-let compare { bytes = a } { bytes = b } = String.compare a b
-let equal { bytes = a } { bytes = b } = String.equal a b
+let compare = String.compare
+let equal = String.equal
 
 (*
 val of_string : string -> t option
