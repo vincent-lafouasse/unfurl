@@ -7,6 +7,7 @@ type t =
   | LLBracket
   | RBracket
   | RRBracket
+  | Newline
   | Eof
 
 let to_string = function
@@ -18,5 +19,6 @@ let to_string = function
   | LLBracket -> "[["
   | RBracket -> "]"
   | RRBracket -> "]]"
+  | Newline -> "new line"
   | Eof -> "end of file"
 ;;
