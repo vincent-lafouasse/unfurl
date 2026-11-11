@@ -11,6 +11,7 @@ let equal = String.equal
 let to_i64 (u : t) : int64 = String.get_int64_be u 0
 
 let to_string u = Printf.sprintf "%Lu" (to_i64 u)
+let pp fmt u = Format.fprintf fmt "%Lu" (to_i64 u)
 
 let of_int64 (i : int64) : t =
   let b = Bytes.create 8 in
@@ -68,6 +69,10 @@ let%test_module "uint64" =
         (fun a ->
            List.for_all (fun b -> sign (Stdlib.compare a b) = sign (compare a b)) us)
         us
+    ;;
+
+    let%test "pp matches to_string" =
+      List.for_all (fun u -> Format.asprintf "%a" pp u = to_string u) us
     ;;
 
     let%test "of_int rejects negatives" =
