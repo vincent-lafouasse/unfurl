@@ -28,3 +28,50 @@ help_text = "ok"      # accepted
 "help" = "no"         # rejected: quoted key
 max-count = 3         # rejected: '-' in key
 ```
+
+## Arrays
+
+Arrays are flat and contain only strings.
+
+- no nested arrays (`[["a"], ["b"]]`)
+- no other element types (`[1, 2]`, `[true]`)
+- may span several lines, and may contain comments
+- a trailing comma is allowed
+- `[]` is syntactically valid; whether an empty array makes sense is up to
+  the key it is assigned to
+
+```toml
+choices = ["png", "jpeg", "webp"]   # accepted
+
+filters = [                         # accepted
+    "nearest",
+    "bilinear",  # comments are fine
+    "lanczos",
+]
+
+sizes = [1, 2]                      # rejected: not a string
+pairs = [["a", "b"]]                # rejected: nested array
+```
+
+## Grammar
+
+Tokens: `Ident` (see Keys), `String`, `Integer`, `Boolean`, `[`, `[[`, `]`,
+`]]`, `=`, `,`, `Newline`, `Eof`. Whitespace and comments are not tokens.
+
+```
+file     ::= stmt* Eof
+stmt     ::= Newline
+           | "[[" Ident "]]" end
+           | "["  Ident "]"  end
+           | Ident "=" value end
+end      ::= Newline | Eof
+
+value    ::= String | Integer | Boolean | array
+array    ::= "[" nl* strings? "]"
+strings  ::= String nl* ("," nl* String nl*)* ("," nl*)?
+nl       ::= Newline
+```
+
+One token of lookahead decides every choice. `[` starts either a table header
+or an array, but only ever at the start of a statement or of a value
+respectively, never both.
