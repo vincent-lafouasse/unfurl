@@ -3,13 +3,8 @@ type t =
   | Integer of Int65.t
   | Boolean of bool
   | String of string
-  | LBracket
-  | LLBracket
-  | RBracket
-  | RRBracket
-  | Equals
-  | Comma
-  | Newline
+  | LParen
+  | RParen
   | Eof
 
 let to_string = function
@@ -17,12 +12,7 @@ let to_string = function
   | Integer i -> Printf.sprintf "integer %s" (Int65.to_string i)
   | Boolean b -> Printf.sprintf "boolean %s" (if b then "true" else "false")
   | String s -> Printf.sprintf "string \"%s\"" s
-  | LBracket -> "'['"
-  | LLBracket -> "[["
-  | RBracket -> "']'"
-  | RRBracket -> "]]"
-  | Equals -> "'='"
-  | Comma -> "','"
-  | Newline -> "new line"
+  | LParen -> "'('"
+  | RParen -> "')'"
   | Eof -> "end of file"
 ;;
